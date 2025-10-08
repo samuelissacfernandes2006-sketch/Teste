@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: 3.9
       - name: instalar dependencias
-        run: pip install -r requirements.txt && pip install -r python-multipart
+        run: pip install -r requirements.txt && pip install python-multipart
       - name: Testando
         run: pytest APP.py
   lint:
@@ -39,6 +39,6 @@ jobs:
         with: 
           python-version: 3.9
       - name: instalar dependencias
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt && pip install python-multipart
       - name: Rodar analise
         run: pylint APP.py
