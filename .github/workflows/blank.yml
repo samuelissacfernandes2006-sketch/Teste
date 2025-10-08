@@ -28,7 +28,7 @@ jobs:
       - name: instalar dependencias
         run: pip install -r requirements.txt
       - name: Testando
-        run: pytest
+        run: pytest APP.py
   lint:
     runs-on: ubunto-latest
     needs: teste
@@ -41,4 +41,4 @@ jobs:
       - name: instalar dependencias
         run: pip install -r requirements.txt
       - name: Rodar analise
-        run: pylint my_module.py
+        run: pylint APP.py
