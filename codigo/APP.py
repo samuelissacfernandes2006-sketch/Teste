@@ -15,7 +15,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 2
 
 pwd_context = CryptContext(schemes=["des_crypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter token
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter toke
 
 #teste de login por usuario e senha
 login_atual= {"usuario":None,"senha": None, "token": None}
