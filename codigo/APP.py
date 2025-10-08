@@ -8,6 +8,7 @@ from jose import jwt ,JWTError
 from jwt import InvalidSignatureError, ExpiredSignatureError
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
+import python_multipart
 
 SECRET_KEY = "teste123"
 ALGORITHM = "HS256"
