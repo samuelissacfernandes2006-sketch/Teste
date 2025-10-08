@@ -31,7 +31,7 @@ jobs:
           pip install pytest
           pip install -r requirements.txt
       - name: Testando
-        run: pytest Teste/.github/codigo/APP.py
+        run: pytest codigo/APP.py
   lint:
     runs-on: ubunto-latest
     needs: teste
