@@ -30,7 +30,7 @@ jobs:
           pip install python-multipart
           pip install -r requirements.txt
       - name: Testando
-        run: pytest codigo/APP.py
+        run: pytest
   lint:
     runs-on: ubunto-latest
     needs: teste
@@ -43,4 +43,4 @@ jobs:
       - name: instalar dependencias
         run: pip install -r requirements.txt && pip install python-multipart
       - name: Rodar analise
-        run: pylint APP.py
+        run: pylint
