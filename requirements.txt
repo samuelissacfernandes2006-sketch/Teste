@@ -7,3 +7,4 @@ python-jose[cryptography]>=3.5.0
 passlib[bcrypt]>=1.7.4
 PyJWT>=2.10.1
 pytest-workflow>=2.1.0
+python-multipart>=0.0.20
