@@ -13,7 +13,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,4 +28,6 @@ jobs:
         pip install pytest
         pip install -r requirements.txt
     - name: Test with pytest
-      run: pytest
+      run: |
+        pip install pytest pytest-cov
+        pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
