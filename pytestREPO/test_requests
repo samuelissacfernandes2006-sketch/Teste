@@ -1,11 +1,12 @@
 import APP
+from requests import request
+from datetime import datetime,  timedelta 
+from jose import jwt 
 
-def test_de_secretkey():
-  valordachave = APP.SECRET_KEY
-  assert valordachave == "teste123"
-def test_de_algorithm():
-  valordachave = APP.ALGORITHM
-  assert valordachave == "HS256"
-def test_de_expire():
-  valordachave = APP.ACCESS_TOKEN_EXPIRE_MINUTES
-  assert valordachave == 2
+def test_get():
+  toencode = {"sub":"teste"}
+  toencode.update("exp": datetime.utcnow() + timedelta(minutes = 2)
+  tokencodificado = jwt.encode(toencode,"teste123",algorithm= "HS256")
+  resultado = request("get","http://127.0.0.1:3019/items/1",headers = "Authorization":f"Bearer {tokencodificado}" )
+  resultado_arrumado - resultado.json()
+  
