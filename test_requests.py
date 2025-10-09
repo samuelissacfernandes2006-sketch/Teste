@@ -1,4 +1,4 @@
-import APP
+
 from requests import request
 from datetime import datetime,  timedelta, timezone 
 from jose import jwt 
