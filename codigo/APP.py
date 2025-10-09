@@ -1,21 +1,20 @@
-from typing import Optional
+from typing import Annotated, Union
 from pydantic import BaseModel
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Header
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base, Session 
-from jose import jwt ,JWTError
+from jose import jwt, JWTError
 from jwt import InvalidSignatureError, ExpiredSignatureError
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
-import python_multipart
 
 SECRET_KEY = "teste123"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 2
 
 pwd_context = CryptContext(schemes=["des_crypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter toke
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter token
 
 #teste de login por usuario e senha
 login_atual= {"usuario":None,"senha": None, "token": None}
@@ -56,15 +55,22 @@ def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
+def validacao_de_token(token: str):
+    try:
+        tokendeco = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+    except ExpiredSignatureError:
+        return {"mensagem":"TOKEN EXPIRADO"}
+    except InvalidSignatureError:
+        return {"mensagem":"ERRO DE ASSINATURA"}
 
-# Funções JWT lembrar de colocar tempo de expiração e colocar em outro arquivo
+
 
 
 
 #verificar usuario na Userdb
 def get_user_by_username(db: Session, username: str):
     return db.query(UserDB).filter(UserDB.username == username).first()
-
+ 
 # Dependência para obter o usuário logado !!teste!////
 async def get_current_user(db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
@@ -166,21 +172,12 @@ async def login_e_criar_token(data: OAuth2PasswordRequestForm = Depends(), db: S
 
 
 @app.get("/items/{item_id}")
-def ler_item(item_id: int, db: Session = Depends(get_db)):
-        verificação_de_usuario = db.query(UserDB).filter(UserDB.username == login_atual["usuario"]).first()
-        if verificação_de_usuario is None:
-            return{"HTTP401":"Faca login"}
-        else: 
-            
-            if login_atual["token"] is None:
-                return {"message":"CRIE UM TOKEN"}
-            try:
-                token = login_atual["token"]
-                decoded = jwt.decode(token, key=SECRET_KEY, algorithms=["HS256"])
-            except ExpiredSignatureError:
-                return {"mensagem":"TOKEN EXPIRADO"}
-            except InvalidSignatureError:
-                return {"mensagem":"TOKEN INVALIDO"}
+def ler_item(item_id: int, db: Session = Depends(get_db),api_head: str = Header(default=None)):
+            #if login_atual["token"] is None:
+            #    return {"message":"CRIE UM TOKEN"}
+            VT_resultado = validacao_de_token(token = api_head)
+            if VT_resultado:
+                return {"mensagem":VT_resultado}
 
             item = db.query(ItemDB).filter(ItemDB.id == item_id).first()
             if item is None:
@@ -226,4 +223,3 @@ def deletar_item(item_id: int, db: Session = Depends(get_db)):
             db.delete(item)
             db.commit()
         return {"mensagem":f"id={item_id}, ITEM DELETADO"}
-
