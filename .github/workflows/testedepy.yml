@@ -30,4 +30,4 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
-        pytest --collect-only path/to/module
+        pytest --collect-only Teste/codigo/test_requests
