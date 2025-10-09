@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base, Session 
 from jose import jwt, JWTError
 from jwt import InvalidSignatureError, ExpiredSignatureError
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 
 SECRET_KEY = "teste123"
@@ -162,9 +162,9 @@ async def login_e_criar_token(data: OAuth2PasswordRequestForm = Depends(), db: S
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode = {"sub": login_atual["usuario"]}
     if access_token_expires:
-        expire = datetime.utcnow() + access_token_expires
+        expire = datetime.now(timezone.utc) + access_token_expires
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp":expire})
     encoded_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     login_atual["token"] = encoded_token
@@ -183,11 +183,12 @@ def ler_item(item_id: int, db: Session = Depends(get_db),api_head: str = Header(
             if item is None:
                 return {"mensagem":"ITEM NÃO ENCONTRADO HTTP_404"}
             return item
+mensagemdelogin ="Faça Login"
 @app.put("/items/{item_id}")
 def atualizar_item(item_id: int, item: Item, db:Session = Depends(get_db)):
     verificação_de_usuario = db.query(UserDB).filter(UserDB.username == login_atual["usuario"])
     if verificação_de_usuario is None:
-        return{"HTTP401":"Faca login"}
+        return{"HTTP401":mensagemdelogin}
     else:
         testedeexistencia = db.query(ItemDB).filter(ItemDB.id == item_id).first()
         if testedeexistencia is None:
@@ -202,7 +203,7 @@ def atualizar_item(item_id: int, item: Item, db:Session = Depends(get_db)):
 async def criar_item(item: Item, db: Session = Depends(get_db)):
     verificação_de_usuario = db.query(UserDB).filter(UserDB.username == login_atual["usuario"])
     if verificação_de_usuario is None:
-        return{"HTTP401":"Faca login"}
+        return{"HTTP401":mensagemdelogin}
     else:
         db_item = ItemDB(name=item.item_name, price=item.item_price)    
         db.add(db_item)
@@ -214,7 +215,7 @@ async def criar_item(item: Item, db: Session = Depends(get_db)):
 def deletar_item(item_id: int, db: Session = Depends(get_db)):
     verificação_de_usuario = db.query(UserDB).filter(UserDB.username == login_atual["usuario"])
     if verificação_de_usuario is None:
-        return{"HTTP401":"Faca login"}
+        return{"HTTP401":mensagemdelogin}
     else:
         item = db.query(ItemDB).filter(ItemDB.id == item_id).first()
         if item is None:
