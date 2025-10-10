@@ -39,19 +39,9 @@ jobs:
           tags: |
             samissac/minha-app-jwt:latest
             samissac/minha-app-jwt:${{ github.sha }}
-
-  #Rodar-o-container:
-   # runs-on: ubunto-latest
-    #steps:
-     # - name: Checkout do Código
-      #  uses: actions/checkout@v4
-#
- #     - name: Login no Docker Hub
-  #      uses: docker/login-action@v3
-   #      username: ${{ secrets.DOCKER_USERNAME }} # Variável Secreta
-    #      password: ${{ secrets.DOCKER_TOKEN }}    # Variável Secreta (Token de Acesso)
-          
-     # - name: Dar RUN na imagem
+      - name: Rodar docker compose
+        run: 
+          docker-compose up -d
       
   
     
