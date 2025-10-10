@@ -5,7 +5,7 @@ from jose import jwt
 
 def test_GET():
   toencode = {"sub":"teste"}
-  toencode.update({"exp":datetime.now(timedelta.utc)+timedelta(minutes = 2)})
+  toencode.update({"exp":datetime.now(timezone.utc)+timedelta(minutes = 2)})
   tokencodificado = jwt.encode(toencode,"teste123", algorithm = "HS256")
   resultado = requests("get", f"http://127.0.0.1:3019/items/1", headers = {"api-head":tokencodificado})
   assert resultado.json == {'mensagem': 'ITEM NÃO ENCONTRADO HTTP_404'}
