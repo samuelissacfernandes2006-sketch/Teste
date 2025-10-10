@@ -1,0 +1,4 @@
+version: '3.8'
+services:
+  minha_api_jwt_docker:
+    image: samissac/minha-app-jwt:latest
