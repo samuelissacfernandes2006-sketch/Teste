@@ -30,25 +30,15 @@ jobs:
 
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      - name: Extrair metadados (tags)
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: samissac/minha-app-jwt
-          tags: |
-            type=raw,value=latest,enable={{is_default}}
-            type=sha,format=short
-            type=semver,pattern={{version}} # Cria tags como 'v1.0.0'
 
       - name: Build e Push da Imagem Docker
         uses: docker/build-push-action@v5
         with:
           context: . # Usa a pasta raiz como contexto de build
           push: true # Faz o push (envio) para o registro após o build
-          tags: ${{ steps.meta.outputs.tags }} # Usa as tags geradas na etapa anterior
-          labels: ${{ steps.meta.outputs.labels }} # Usa os labels gerados
-      
+          tags: |
+            samissac/minha-app-jwt:latest
+            samissac/minha-app-jwt:${{ github.sha }}
     
   
   teste_pytest:
