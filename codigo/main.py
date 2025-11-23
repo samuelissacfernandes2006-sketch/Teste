@@ -5,6 +5,7 @@ from jose import jwt
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from passlib.context import CryptContext
+from typing import Generator, Optional
 import psycopg2
 #secrets
 SECRET_KEY = "teste123"
@@ -14,16 +15,40 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 2
 pwd_context = CryptContext(schemes=["des_crypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter token
 
-def criar_conexão():
+import psycopg2
+from typing import Generator, Optional
+
+
+on_off = {"status": False}
+
+def criar_conexão() -> Generator[Optional[object], None, None]:
+    if on_off["status"] == False:
+        yield None
+        return 
+    
     conexão = None
+    cursorDB = None
     try:
-        conexão  = psycopg2.connect(host="some-postgres",port="5432",user="postgres",password="Jen28082006@*.")
+
+        conexão  = psycopg2.connect(
+            host="postgres-service",
+            port="5432",
+            user="postgres",
+            password="SuaSenhaForte", 
+            database='postgres'
+        )
         conexão.set_session(autocommit=True)
         cursorDB = conexão.cursor()
+        
         yield cursorDB
+        
+    except:
+        yield None
+        
     finally:
-        if conexão:
-            conexão.close()
+        if conexão is not None:
+            try:
+                conexão.close()
 def criar_tabelas():
     conexao_gerador = criar_conexão()
     cursorDB = next(conexao_gerador)
@@ -50,7 +75,7 @@ def criar_tabelas():
                     valor float NOT NULL,
                     data_compra TIMESTAMPTZ NOT NULL,
                     data_confirmacao_compra TIMESTAMPTZ);''')
-criar_tabelas()
+
 
 app = FastAPI()
 
@@ -87,6 +112,18 @@ class ClienteUPDATE(BaseModel):
 @app.get("/")
 def ler_raiz():
     return{"TESTE":"API(localhost:3019/docs)"}
+@app.put("/on_off/status")
+def criar_conexao8(select_on_off:str):
+    if select_on_off = "on":
+        on_off["status"] = "True"
+        criar_tabelas()
+        return {"menssagem":"conexão ligada"}
+    if select_on_off = "off":
+        on_off["status"] = False
+        return {"menssagem":"conexão desligada"}
+        
+        
+    
     
 @app.post("/cliente")
 def criar_cliente(cliente:ClienteCREATE, cursorDB: object = Depends(criar_conexão)):
