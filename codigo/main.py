@@ -15,10 +15,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 2
 pwd_context = CryptContext(schemes=["des_crypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter token
 
-import psycopg2
-from typing import Generator, Optional
-
-
 on_off = {"status": False}
 
 def criar_conexão() -> Generator[Optional[object], None, None]:
@@ -49,6 +45,7 @@ def criar_conexão() -> Generator[Optional[object], None, None]:
         if conexão is not None:
             try:
                 conexão.close()
+                
 def criar_tabelas():
     conexao_gerador = criar_conexão()
     cursorDB = next(conexao_gerador)
@@ -112,6 +109,7 @@ class ClienteUPDATE(BaseModel):
 @app.get("/")
 def ler_raiz():
     return{"TESTE":"API(localhost:3019/docs)"}
+    
 @app.put("/on_off/status")
 def criar_conexao8(select_on_off:str):
     if select_on_off = "on":
