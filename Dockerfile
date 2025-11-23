@@ -8,7 +8,7 @@ COPY ./requirements.txt /codigo/requirements.txt
 # 
 RUN pip install --no-cache-dir --upgrade -r /codigo/requirements.txt
 # 
-COPY ./codigo /codigo/APP
+COPY ./codigo /codigo/
 #
 EXPOSE "3019"
 # 
