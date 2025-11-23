@@ -12,4 +12,4 @@ COPY ./codigo /codigo/APP
 #
 EXPOSE "3019"
 # 
-CMD ["uvicorn", "codigo.APP:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "3019"]
+CMD ["uvicorn", "APP:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "3019"]
