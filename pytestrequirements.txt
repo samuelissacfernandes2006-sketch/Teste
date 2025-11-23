@@ -1,3 +1,0 @@
-requests>=2.32.5
-python-jose>=3.5.0
-DateTime>=5.5

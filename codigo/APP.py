@@ -55,13 +55,6 @@ criar_tabelas()
 
 app = FastAPI()
 
-def validacao_de_token(token: str):
-    try:
-        tokendeco = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-    except ExpiredSignatureError:
-        return {"mensagem":"TOKEN EXPIRADO"}
-    except InvalidSignatureError:
-        return {"mensagem":"ERRO DE ASSINATURA"}
 
 class Prod(BaseModel):
     nome_produto: str
@@ -95,6 +88,7 @@ class ClienteUPDATE(BaseModel):
 @app.get("/")
 def ler_raiz():
     return{"TESTE":"API(localhost:3019/docs)"}
+    
 @app.post("/cliente")
 def criar_cliente(cliente:ClienteCREATE, cursorDB: object = Depends(criar_conexão)):
     try:
