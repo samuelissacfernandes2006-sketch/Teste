@@ -1,6 +1,6 @@
 
 
-name: python pytest
+name: Docker build e push
 
 on:
 
@@ -35,4 +35,4 @@ jobs:
             samissac/minha-app-teste:${{ github.sha }}
       - name: Rodar docker compose
         run: 
-          docker-compose up -d
+          docker compose up -d
