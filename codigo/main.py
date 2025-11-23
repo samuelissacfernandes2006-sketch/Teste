@@ -16,7 +16,6 @@ pwd_context = CryptContext(schemes=["des_crypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") #rota "token" para obter token
 
 on_off = {"status": False}
-
 def criar_conexão() -> Generator[Optional[object], None, None]:
     if on_off["status"] == False:
         yield None
@@ -25,7 +24,6 @@ def criar_conexão() -> Generator[Optional[object], None, None]:
     conexão = None
     cursorDB = None
     try:
-
         conexão  = psycopg2.connect(
             host="postgres-service",
             port="5432",
@@ -44,8 +42,7 @@ def criar_conexão() -> Generator[Optional[object], None, None]:
     finally:
         if conexão is not None:
             try:
-                conexão.close()
-                
+                conexão.close()           
 def criar_tabelas():
     conexao_gerador = criar_conexão()
     cursorDB = next(conexao_gerador)
