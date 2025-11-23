@@ -3,17 +3,17 @@
 FROM python:3.9
 
 # 
-WORKDIR /code
+WORKDIR /codigo
 
 # 
-COPY ./requirements.txt /code/requirements.txt
+COPY ./requirements.txt /codigo/requirements.txt
 
 # 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /codigo/requirements.txt
 
 # 
 COPY ./codigo /codigo/APP
 
 EXPOSE "3019"
 # 
-CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "app.main:APP", "--proxy-headers", "--host", "0.0.0.0", "--port", "3019"]
