@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from fastapi import FastAPI, Depends,Header
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt
-from jwt import InvalidSignatureError, ExpiredSignatureError
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from passlib.context import CryptContext
@@ -146,33 +145,17 @@ def deletar_cliente(cpf_cliente: int, cursorDB: object = Depends(criar_conexão)
 
     return {"mensagem":"cliente deletado"}
 
-#criação de token :
-
-@app.post("/token")
-async def login_e_criar_token(data: OAuth2PasswordRequestForm = Depends()):
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode = {"sub": data.username}
-    if access_token_expires:
-        expire = datetime.utcnow() + access_token_expires
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp":expire})
-    encoded_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return {"access_token": encoded_token, "token_type": "bearer"}
 
 @app.get("/produto/{nome_do_produto}")
-def ler_item(nome_do_produto = str, api_head: str = Header(default=None),cursorDB: object = Depends(criar_conexão)):
-            VT_resultado = validacao_de_token(token = api_head)
-            if VT_resultado:
-                return {"mensagem":VT_resultado}
-            cursorDB.execute('''SELECT * FROM produto WHERE nome_produto = %s''',(nome_do_produto,))
-            linhas = cursorDB.fetchall() 
-            produto = []
-            for linha in linhas:
-                produto+= linha
-            if produto == []:
-                return {"mensagem":"ITEM NÃO ENCONTRADO HTTP_404"}
-            return {"resultado":produto}
+def ler_item(nome_do_produto = str,cursorDB: object = Depends(criar_conexão)):
+    cursorDB.execute('''SELECT * FROM produto WHERE nome_produto = %s''',(nome_do_produto,))
+    linhas = cursorDB.fetchall() 
+    produto = []
+    for linha in linhas:
+        produto+= linha
+    if produto == []:
+        return {"mensagem":"ITEM NÃO ENCONTRADO HTTP_404"}
+    return {"resultado":produto}
 
 @app.put("/produto/{nome_do_produto}")
 def atualizar_item(nome_do_produto: str, prod:ProdUPDATE,cursorDB: object = Depends(criar_conexão)):
