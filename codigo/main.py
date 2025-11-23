@@ -41,8 +41,7 @@ def criar_conexão() -> Generator[Optional[object], None, None]:
         
     finally:
         if conexão is not None:
-            try:
-                conexão.close()           
+                conexão.close() 
 def criar_tabelas():
     conexao_gerador = criar_conexão()
     cursorDB = next(conexao_gerador)
@@ -134,11 +133,11 @@ def ler_raiz():
     
 @app.put("/on_off/status")
 def criar_conexao8(select_on_off:str):
-    if select_on_off = "on":
+    if select_on_off == "on":
         on_off["status"] = "True"
         criar_tabelas()
         return {"menssagem":"conexão ligada"}
-    if select_on_off = "off":
+    if select_on_off == "off":
         on_off["status"] = False
         return {"menssagem":"conexão desligada"}
         
