@@ -1,16 +1,12 @@
-# This is a basic workflow to help you get started with Actions
+
 
 name: python pytest
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ main ]
+
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -47,13 +43,11 @@ jobs:
       - name: Build e Push da Imagem Docker
         uses: docker/build-push-action@v5
         with:
-          context: . # Usa a pasta raiz como contexto de build
-          push: true # Faz o push (envio) para o registro após o build
+          context: . 
+          push: true 
           tags: |
-            samissac/minha-app-jwt:latest
-            samissac/minha-app-jwt:${{ github.sha }}
+            samissac/minha-app-teste:latest
+            samissac/minha-app-teste:${{ github.sha }}
       - name: Rodar docker compose
         run: 
           docker-compose up -d
-          pip install pytest pytest-cov
-          pytest
