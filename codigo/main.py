@@ -50,29 +50,54 @@ def criar_tabelas():
     conexao_gerador = criar_conexão()
     cursorDB = next(conexao_gerador)
     
-    cursorDB.execute('''CREATE TABLE IF NOT EXISTS cliente (
-                    id_cliente SERIAL PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    cpf VARCHAR(12) NOT NULL UNIQUE,
-                    data_de_nascimento DATE NOT NULL,
-                    esta_ativo BOOLEAN NOT NULL DEFAULT TRUE,
-                    CONSTRAINT chk_cpf_formato CHECK ( cpf ~ '^\d{11}$' )); ''')
-    cursorDB.execute('''CREATE TABLE IF NOT EXISTS produto (
-                    id_produto SERIAL PRIMARY KEY,
-                    nome_produto VARCHAR(255) NOT NULL UNIQUE,
-                    categoria VARCHAR(255) NOT NULL,
-                    valor float NOT NULL,
-                    esta_ativo BOOLEAN NOT NULL DEFAULT TRUE ); ''')
-    cursorDB.execute('''CREATE TABLE IF NOT EXISTS vendas (
-                    id_venda SERIAL PRIMARY KEY,
-                    id_cliente int REFERENCES cliente(id_cliente),
-                    id_produto int REFERENCES produto(id_produto),
-                    nome_produto VARCHAR(255) REFERENCES produto(nome_produto),
-                    quantidade int NOT NULL,
-                    valor float NOT NULL,
-                    data_compra TIMESTAMPTZ NOT NULL,
-                    data_confirmacao_compra TIMESTAMPTZ);''')
+    try:
+        if cursorDB is None:
+            return
+        
 
+        cursorDB.execute('''
+            CREATE TABLE IF NOT EXISTS cliente (
+                id_cliente SERIAL PRIMARY KEY,
+                nome VARCHAR(255) NOT NULL,
+                cpf VARCHAR(12) NOT NULL UNIQUE,
+                data_de_nascimento DATE NOT NULL,
+                esta_ativo BOOLEAN NOT NULL DEFAULT TRUE,
+                CONSTRAINT chk_cpf_formato CHECK ( cpf ~ '^\d{11}$' )
+            );
+        ''')
+        
+        cursorDB.execute('''
+            CREATE TABLE IF NOT EXISTS produto (
+                id_produto SERIAL PRIMARY KEY,
+                nome_produto VARCHAR(255) NOT NULL UNIQUE,
+                categoria VARCHAR(255) NOT NULL,
+                valor float NOT NULL,
+                esta_ativo BOOLEAN NOT NULL DEFAULT TRUE
+            );
+        ''')
+        
+        cursorDB.execute('''
+            CREATE TABLE IF NOT EXISTS vendas (
+                id_venda SERIAL PRIMARY KEY,
+                id_cliente INT REFERENCES cliente(id_cliente),
+                id_produto INT REFERENCES produto(id_produto),
+                quantidade INT NOT NULL,
+                valor FLOAT NOT NULL,
+                data_compra TIMESTAMPTZ NOT NULL,
+                data_confirmacao_compra TIMESTAMPTZ
+            );
+        ''')
+
+    except Exception as e:
+        None
+        
+    finally:
+        try:
+            next(conexao_gerador) 
+        except StopIteration:
+            pass
+        except Exception as e:
+            None
 
 app = FastAPI()
 
