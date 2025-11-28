@@ -1,0 +1,84 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: execute-aws-secret-list
+  title: Listar Segredos Na AWS
+  description: Listar Segredos Na AWS
+  tags:
+    - recommended
+    - aws
+    - resources
+    - infrastructure
+    - secretmanager
+spec:
+  owner: plataforma
+  type: service
+
+  parameters:
+    - title: Ambiente, Domain e App
+      description: Selecione o Domain e App
+      required:
+        - APP
+        - DOMAIN
+        - ENVIROMENT
+      properties:
+        ENVIROMENT:
+          title: Informe o Ambiente
+          type: string
+          default: dev
+          enum:
+            - dev
+        DOMAIN:
+          title: AppProject
+          description: 'Nome do domínio.'
+          type: string
+          enum:
+            - atendimentos
+            - autorizacao
+            - captacao
+            - cartoes
+            - cobranca
+            - controladoria
+            - core
+            - database
+            - datascience
+            - dmconta
+            - dmcredito
+            - dmpag
+            - emprestimos
+            - financeiro
+            - plataforma
+            - portal-lojista
+            - prevencao-risco
+            - qa
+            - sicred
+            - stress-test
+            - sva
+            - tombamento
+            - troubleshooting
+        APP:
+          title: Aplicação na AWS 
+          description: 'Nome exato da aplicação na aws.'
+          type: string
+
+  steps:
+    - id: acme:aws:list-filtered-secrets
+      name: AWS List Filtered Secrets
+      action: acme:aws:list-filtered-secrets
+      input:
+        app: ${{ parameters.APP }}
+        domain: ${{ parameters.DOMAIN }}
+        env: ${{ parameters.ENVIROMENT }}
+
+  output:
+    text:
+      - title: Informação
+        content: |
+          **Verifique os secrets abaixo**
+      - title: Secrets
+        content: |
+          ${{ steps.acme:aws:list-filtered-secrets.output.secrets | json }}
+    # links:
+    #   - title: Pipeline Desenvolvimento (2474)
+    #     url: https://dev.azure.com/devdmcard/DevOps/_build?definitionId=2474
+
