@@ -29,7 +29,7 @@ def criar_conexão() -> Generator[Optional[object], None, None]:
             port="5432",
             user="postgres",
             password="Sam123", 
-            database='postgres'
+            database="postgres"
         )
         conexão.set_session(autocommit=True)
         cursorDB = conexão.cursor()
