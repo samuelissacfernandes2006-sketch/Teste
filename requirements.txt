@@ -9,3 +9,4 @@ PyJWT>=2.10.1
 pytest-workflow>=2.1.0
 python-multipart>=0.0.20
 psycopg2
+prometheus-client>=0.23.1
