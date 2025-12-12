@@ -25,10 +25,10 @@ def criar_conexão() -> Generator[Optional[object], None, None]:
     cursorDB = None
     try:
         conexão  = psycopg2.connect(
-            host="postgres-service",
+            host="postgres-api",
             port="5432",
             user="postgres",
-            password="SuaSenhaForte", 
+            password="Sam123", 
             database='postgres'
         )
         conexão.set_session(autocommit=True)
