@@ -7,6 +7,8 @@ from zoneinfo import ZoneInfo
 from passlib.context import CryptContext
 from typing import Generator, Optional
 import psycopg2
+from prometheus_client import make_asgi_app
+
 #secrets
 SECRET_KEY = "teste123"
 ALGORITHM = "HS256"
@@ -96,6 +98,8 @@ def criar_tabelas():
             None
 
 app = FastAPI()
+metrics_app = make_asgi_app()
+app.mount("/metrics", metrics_app)
 
 
 class Prod(BaseModel):
