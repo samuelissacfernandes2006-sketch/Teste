@@ -1,34 +1,34 @@
-apiVersion: networking.istio.io/v1
-kind: VirtualService
-metadata:
-  name: workflow-api-vs
-  namespace: workflow-api-vs
-spec:
-  hosts:
-    - "gateway-default"
-  gateways:
-    - default/internal-gateway-istio
-  http:
-    - match:
-        - uri:
-            prefix: /workflow-api/
-      rewrite:
-        uri: /
-      route:
-       - destination:
-          host: workflow-api
-          port:
-           number: 3019
-      corsPolicy:
-        allowMethods:
-          - POST
-          - GET
-          - PUT
-          - OPTIONS
-          - PATCH
-          - DELETE
-        allowOrigins:
-          - exact: "*"
-        allowHeaders:
-          - authorization
-          - content-type
+# apiVersion: networking.istio.io/v1
+# kind: VirtualService
+# metadata:
+#   name: workflow-api-vs
+#   namespace: workflow-api-vs
+# spec:
+#   hosts:
+#     - "gateway-default"
+#   gateways:
+#     - default/internal-gateway-istio
+#   http:
+#     - match:
+#         - uri:
+#             prefix: /workflow-api/
+#       rewrite:
+#         uri: /
+#       route:
+#        - destination:
+#           host: workflow-api
+#           port:
+#            number: 3019
+#       corsPolicy:
+#         allowMethods:
+#           - POST
+#           - GET
+#           - PUT
+#           - OPTIONS
+#           - PATCH
+#           - DELETE
+#         allowOrigins:
+#           - exact: "*"
+#         allowHeaders:
+#           - authorization
+#           - content-type

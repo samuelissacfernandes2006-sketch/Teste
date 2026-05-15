@@ -1,7 +1,7 @@
-apiVersion: networking.istio.io/v1
-kind: VirtualService
-metadata:
-  name: workflow-api-vs
-  namespace: workflow-api-vs
-spec:
+# apiVersion: networking.istio.io/v1
+# kind: VirtualService
+# metadata:
+#   name: workflow-api-vs
+#   namespace: workflow-api-vs
+# spec:
  
