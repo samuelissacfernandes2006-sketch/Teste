@@ -3,5 +3,5 @@ commonLabels:
 patches:
   - path: deployment.yaml
   - path: namespace.yaml
-  - path: service.yaml 
+
   - path: virtual-service.yaml
