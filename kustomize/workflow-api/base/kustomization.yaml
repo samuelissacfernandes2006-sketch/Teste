@@ -1,6 +1,6 @@
 commonLabels:
   env: dev
-patches:
-  - path: deployment.yaml
-  - path: namespace.yaml
-  - path: virtual-service.yaml
+resources:
+  - deployment.yaml
+  - namespace.yaml
+  - virtual-service.yaml
