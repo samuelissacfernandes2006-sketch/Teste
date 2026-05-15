@@ -6,4 +6,12 @@ metadata:
   name: workflow-api
   namespace: workflow-api
 spec:
-  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow-api
+  template:
+    metadata:
+      labels:
+        app: workflow-api
+    spec:
