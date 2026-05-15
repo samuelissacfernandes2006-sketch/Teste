@@ -2,5 +2,4 @@ commonLabels:
   env: dev
 resources:
   - deployment.yaml
-  - namespace.yaml
   - virtual-service.yaml

@@ -6,5 +6,4 @@ resources:
   - ../../base
 patches:
   - path: deployment.yaml
-  - path: namespace.yaml
   - path: virtual-service.yaml
