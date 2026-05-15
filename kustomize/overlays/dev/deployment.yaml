@@ -1,1 +1,29 @@
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+   app: workflow-api
+  name: workflow-api
+  namespace: workflow-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow-api
+  template:
+    metadata:
+      labels:
+        app: workflow-api
+    spec:
+      containers:
+          name: workflow-api
+          image: samissac/minha-app-teste:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3019
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 50m
+              memory: 256Mi
