@@ -16,7 +16,7 @@ spec:
         app: workflow-api
     spec:
       containers:
-          name: workflow-api
+        - name: workflow-api
           image: samissac/minha-app-teste:latest
           imagePullPolicy: Always
           ports:
