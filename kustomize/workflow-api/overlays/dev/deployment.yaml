@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-   app: workflow-api
+    app: workflow-api
   name: workflow-api
   namespace: workflow-api
 spec:
